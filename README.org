@@ -8,4 +8,5 @@ This document describes an overview of each module. For details, read the commen
 section of each elisp file.
 
 * Dirty Git repositories
-This module displays a list of dirty repositories through [[https://github.com/akirak/repom.el][repom.el]]. You have to install repom.el.
+=corefighter-repom.el= provides a module that displays a list of dirty repositories through [[https://github.com/akirak/repom.el][repom.el]].
+To use this module, you have to install repom.el.
