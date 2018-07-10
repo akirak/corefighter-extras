@@ -1,7 +1,7 @@
 #+title: Extra Modules for Core Fighter
 
 This repository contains modules for [[https://github.com/akirak/corefighter.el][corefighter.el]] that require extra dependencies.
-To use modules in the repository, you have to install corefighter.el as well as
+To use these modules, you have to install corefighter.el as well as
 packages required by each module.
 
 This document describes an overview of each module. For details, read the commentary
