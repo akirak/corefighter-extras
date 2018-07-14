@@ -56,8 +56,10 @@
                     (format "%s contains %d dirty files"
                             (abbreviate-file-name repo)
                             (-sum (mapcar #'cdr sums)))
-                    :action-window 'other-window
-                    :action `(magit-status ,repo))))
+                    :action
+                    `(let ((magit-display-buffer-function
+                            #'magit-display-buffer-same-window-except-diff-v1))
+                       (magit-status ,repo)))))
 
 (provide 'corefighter-repom)
 ;;; corefighter-repom.el ends here
