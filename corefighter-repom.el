@@ -43,9 +43,11 @@
 (require 'dash)
 
 (defclass corefighter-repom-dirty (corefighter-module)
-  ((title :initform "Git repositories in dirty states")
+  ((title :initform "Dirty Git repositories")
    (fields :initarg :fields
-           :initform '(dirty untracked))))
+           :initform '(dirty untracked)))
+  "Core Fighter module to check dirty states of local Git
+repositories.")
 
 (cl-defmethod corefighter-module-items ((_obj corefighter-repom-dirty)
                                         &optional _refresh)
