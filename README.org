@@ -4,9 +4,4 @@ This repository contains modules for [[https://github.com/akirak/corefighter.el]
 To use these modules, you have to install corefighter.el as well as
 packages required by each module.
 
-This document describes an overview of each module. For details, read the commentary
-section of each elisp file.
-
-* Dirty Git repositories
-=corefighter-repom.el= provides a module that displays a list of dirty repositories through [[https://github.com/akirak/repom.el][repom.el]].
-To use this module, you have to install repom.el.
+For documentation, see [[https://github.com/akirak/corefighter.el/wiki/Modules][a wiki page]] in corefighter.el repository.
