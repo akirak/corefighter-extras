@@ -82,7 +82,7 @@ Accepts the same type as \":sort\" in `org-ql'.")
                      (title (org-element-property :raw-value element))
                      (scheduled (org-element-property :scheduled element))
                      (deadline (org-element-property :deadline element))
-                     (due (cl-case ,(oref obj due)
+                     (due (cl-case ',(oref obj due)
                             ('scheduled scheduled)
                             ('deadline deadline)
                             ('earlier (cond
