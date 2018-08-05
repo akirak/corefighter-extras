@@ -78,15 +78,15 @@ Accepts the same type as \":sort\" in `org-ql'.")
             (title (org-element-property :raw-value element))
             (scheduled (org-element-property :scheduled element))
             (deadline (org-element-property :deadline element))
-            (due (cl-case ',(oref obj due)
-                   ('scheduled scheduled)
-                   ('deadline deadline)
-                   ('earlier (cond
-                              ((and scheduled deadline)
-                               (-min-by (-on #'time-less-p
-                                             #'org-timestamp-to-time)
-                                        (list scheduled deadline)))
-                              (t (or scheduled deadline)))))))
+            (due (cl-case (oref obj due)
+                   (scheduled scheduled)
+                   (deadline deadline)
+                   (earlier (cond
+                             ((and scheduled deadline)
+                              (-min-by (-on #'time-less-p
+                                            #'org-timestamp-to-time)
+                                       (list scheduled deadline)))
+                             (t (or scheduled deadline)))))))
        (make-corefighter-item
         ;; FIXME: Make the title format configurable
         :title (concat title
