@@ -4,7 +4,7 @@
 
 ;; Author: Akira Komamura <akira.komamura@gmail.com>
 ;; Version: 1.0-pre
-;; Package-Requires: ((emacs "25.1") (corefighter "1.0") (dash "2.12") (org-ql "1.0"))
+;; Package-Requires: ((emacs "25.1") (corefighter "1.0") (dash "2.12") (org-ql "1.0") (org-agenda-ng "1.0"))
 ;; URL: https://github.com/akirak/corefighter-extras/
 
 ;; This file is not part of GNU Emacs.
@@ -32,6 +32,7 @@
 ;;; Code:
 
 (require 'org-ql)
+(require 'org-agenda-ng)
 (require 'corefighter)
 (require 'dash)
 
