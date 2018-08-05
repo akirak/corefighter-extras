@@ -55,9 +55,17 @@ repositories.")
            collect (make-corefighter-item
                     :title (abbreviate-file-name repo)
                     :description
-                    (format "%s contains %d dirty files"
+                    (format "%s: "
                             (abbreviate-file-name repo)
-                            (-sum (mapcar #'cdr sums)))
+                            (mapconcat
+                             (pcase-lambda (`(,type . ,count))
+                               (format "%d %s" count
+                                       (cl-case type
+                                         (dirty "dirty files")
+                                         (untracked "untracked files")
+                                         (stash "stashes"))))
+                             sums
+                             ", "))
                     :action
                     `(let ((magit-display-buffer-function
                             #'magit-display-buffer-same-window-except-diff-v1))
