@@ -89,11 +89,7 @@ Accepts the same type as \":sort\" in `org-ql'.")
                                        (list scheduled deadline)))
                              (t (or scheduled deadline)))))))
        (make-corefighter-item
-        ;; FIXME: Make the title format configurable
-        :title (concat title
-                       (if due
-                           (concat " " (org-element-property :raw-value due))
-                         ""))
+        :title title
         :action `(org-goto-marker-or-bmk ,marker)
         :due (when due
                (corefighter-encode-time
