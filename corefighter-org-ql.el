@@ -72,37 +72,35 @@ Accepts the same type as \":sort\" in `org-ql'.")
 
 (defmethod corefighter-module-items ((obj corefighter-org-ql)
                                      &optional _refresh)
-  (eval (macroexpand
-         `(org-ql (quote ,(corefighter-org-ql--expand-files (oref obj files)))
+  (mapcar
+   (lambda (element)
+     (let* ((marker (org-element-property :org-marker element))
+            (title (org-element-property :raw-value element))
+            (scheduled (org-element-property :scheduled element))
+            (deadline (org-element-property :deadline element))
+            (due (cl-case ',(oref obj due)
+                   ('scheduled scheduled)
+                   ('deadline deadline)
+                   ('earlier (cond
+                              ((and scheduled deadline)
+                               (-min-by (-on #'time-less-p
+                                             #'org-timestamp-to-time)
+                                        (list scheduled deadline)))
+                              (t (or scheduled deadline)))))))
+       (make-corefighter-item
+        ;; FIXME: Make the title format configurable
+        :title (concat title
+                       (if due
+                           (concat " " (org-element-property :raw-value due))
+                         ""))
+        :action `(org-goto-marker-or-bmk ,marker)
+        :due (when due
+               (corefighter-encode-time
+                (float-time (org-timestamp-to-time due)))))))
+   (eval `(org-ql (quote ,(corefighter-org-ql--expand-files (oref obj files)))
             ,(oref obj q)
-            :action-fn
-            (lambda (element)
-              (let* ((marker (make-marker))
-                     (pos (org-element-property :begin element))
-                     (title (org-element-property :raw-value element))
-                     (scheduled (org-element-property :scheduled element))
-                     (deadline (org-element-property :deadline element))
-                     (due (cl-case ',(oref obj due)
-                            ('scheduled scheduled)
-                            ('deadline deadline)
-                            ('earlier (cond
-                                       ((and scheduled deadline)
-                                        (-min-by (-on #'time-less-p
-                                                      #'org-timestamp-to-time)
-                                                 (list scheduled deadline)))
-                                       (t (or scheduled deadline)))))))
-                (set-marker marker pos)
-                (make-corefighter-item
-                 ;; FIXME: Make the title format configurable
-                 :title (concat title
-                                (if due
-                                    (concat " " (org-element-property :raw-value due))
-                                  ""))
-                 :action `(org-goto-marker-or-bmk ,marker)
-                 :due (when due
-                        (corefighter-encode-time
-                         (float-time (org-timestamp-to-time due)))))))
-            :sort ,(oref obj sort)))))
+            :sort ,(oref obj sort)
+            :action-fn #'org-agenda-ng--add-markers))))
 
 (provide 'corefighter-org-ql)
 ;;; corefighter-org-ql.el ends here
