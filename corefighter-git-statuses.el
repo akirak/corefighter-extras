@@ -1,4 +1,4 @@
-;;; corefighter-repom.el --- Repository statuses in core fighter -*- lexical-binding: t -*-
+;;; corefighter-git-statuses.el --- Repository statuses in core fighter -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2018 Akira Komamura
 
@@ -33,7 +33,7 @@
 
 ;; An example configuration is as follows:
 ;; (setq corefighter-modules
-;;       '((corefighter-repom-dirty)
+;;       '((corefighter-git-statuses)
 ;;         (corefighter-org-agenda)))
 
 ;;; Code:
@@ -42,7 +42,7 @@
 (require 'repom)
 (require 'dash)
 
-(defclass corefighter-repom-dirty (corefighter-module)
+(defclass corefighter-git-statuses (corefighter-module)
   ;; TODO: Allow restricting target repositories
   ((title :initform "Dirty Git repositories")
    (fields :initarg :fields
@@ -51,7 +51,7 @@
 repositories.  See `repom-git-statuses` for definitions of the
 options.")
 
-(cl-defmethod corefighter-module-items ((_obj corefighter-repom-dirty)
+(cl-defmethod corefighter-module-items ((_obj corefighter-git-statuses)
                                         &optional _refresh)
   (cl-loop for (repo . sums) in (repom-git-statuses (oref _obj fields))
            collect (make-corefighter-item
