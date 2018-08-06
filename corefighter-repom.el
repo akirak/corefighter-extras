@@ -43,11 +43,13 @@
 (require 'dash)
 
 (defclass corefighter-repom-dirty (corefighter-module)
+  ;; TODO: Allow restricting target repositories
   ((title :initform "Dirty Git repositories")
    (fields :initarg :fields
            :initform '(dirty untracked)))
   "Core Fighter module to check dirty states of local Git
-repositories.")
+repositories.  See `repom-git-statuses` for definitions of the
+options.")
 
 (cl-defmethod corefighter-module-items ((_obj corefighter-repom-dirty)
                                         &optional _refresh)
