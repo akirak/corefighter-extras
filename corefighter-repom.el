@@ -59,19 +59,9 @@ options.")
                     :description
                     (format "%s: "
                             (abbreviate-file-name repo)
-                            (mapconcat
-                             (pcase-lambda (`(,type . ,result))
-                               (pcase type
-                                 ('dirty (format "%d dirty files" (length result)))
-                                 ('untracked (format "%d untracked files" (length result)))
-                                 ('stash (format "%d stashes" (length result)))
-                                 ((or 'unmerged
-                                      `(unmerged ,ref))
-                                  (format "The following branches are unmerged into %s: "
-                                          (or ref "HEAD")
-                                          (string-join result ", ")))))
-                             (-filter (-not #'cdr) sums)
-                             ", "))
+                            (mapconcat #'repom-git-status-summary
+                                       sums
+                                       "\n"))
                     :action
                     `(let ((magit-display-buffer-function
                             #'magit-display-buffer-same-window-except-diff-v1))
