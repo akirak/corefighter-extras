@@ -58,13 +58,12 @@ repositories.")
                     (format "%s: "
                             (abbreviate-file-name repo)
                             (mapconcat
-                             (pcase-lambda (`(,type . ,count))
-                               (format "%d %s" count
-                                       (cl-case type
-                                         (dirty "dirty files")
-                                         (untracked "untracked files")
-                                         (stash "stashes"))))
-                             sums
+                             (pcase-lambda (`(,type . ,result))
+                               (cl-case type
+                                 (dirty (format "%d dirty files" (length result)))
+                                 (untracked (format "%d untracked files" (length result)))
+                                 (stash (format "%d stashes" (length result)))))
+                             (-filter (-not #'cdr) sums)
                              ", "))
                     :action
                     `(let ((magit-display-buffer-function
