@@ -61,10 +61,15 @@ options.")
                             (abbreviate-file-name repo)
                             (mapconcat
                              (pcase-lambda (`(,type . ,result))
-                               (cl-case type
-                                 (dirty (format "%d dirty files" (length result)))
-                                 (untracked (format "%d untracked files" (length result)))
-                                 (stash (format "%d stashes" (length result)))))
+                               (pcase type
+                                 ('dirty (format "%d dirty files" (length result)))
+                                 ('untracked (format "%d untracked files" (length result)))
+                                 ('stash (format "%d stashes" (length result)))
+                                 ((or 'unmerged
+                                      `(unmerged ,ref))
+                                  (format "The following branches are unmerged into %s: "
+                                          (or ref "HEAD")
+                                          (string-join result ", ")))))
                              (-filter (-not #'cdr) sums)
                              ", "))
                     :action
