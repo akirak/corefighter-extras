@@ -67,5 +67,5 @@ options.")
                             #'magit-display-buffer-same-window-except-diff-v1))
                        (magit-status ,repo)))))
 
-(provide 'corefighter-repom)
-;;; corefighter-repom.el ends here
+(provide 'corefighter-git-statuses)
+;;; corefighter-git-statuses.el ends here
