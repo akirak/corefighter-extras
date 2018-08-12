@@ -57,11 +57,9 @@ options.")
            collect (make-corefighter-item
                     :title (abbreviate-file-name repo)
                     :description
-                    (format "%s: "
-                            (abbreviate-file-name repo)
-                            (mapconcat #'repom-git-status-summary
-                                       sums
-                                       "\n"))
+                    (mapconcat #'repom-git-status-summary
+                               sums
+                               "\n")
                     :action
                     `(let ((magit-display-buffer-function
                             #'magit-display-buffer-same-window-except-diff-v1))
