@@ -4,7 +4,7 @@
 
 ;; Author: Akira Komamura <akira.komamura@gmail.com>
 ;; Version: 1.0-pre
-;; Package-Requires: ((emacs "25.1") (corefighter "1.0") (dash "2.12") (org-ql "1.0") (org-agenda-ng "1.0"))
+;; Package-Requires: ((emacs "25.1") (corefighter "0.2") (dash "2.12") (org-ql "1.0") (org-agenda-ng "1.0"))
 ;; URL: https://github.com/akirak/corefighter-extras/
 
 ;; This file is not part of GNU Emacs.
@@ -38,6 +38,8 @@
 
 (defclass corefighter-org-ql (corefighter-module)
   ((title :initform "org-ql")
+   (navigate-action
+    :initform (corefighter-make-action #'org-goto-marker-or-bmk))
    (files :initarg :files
           :initform (lambda () (org-agenda-files))
           :type (or list
@@ -90,7 +92,11 @@ Accepts the same type as \":sort\" in `org-ql'.")
                              (t (or scheduled deadline)))))))
        (make-corefighter-item
         :title title
-        :action `(org-goto-marker-or-bmk ,marker)
+        :description
+        (with-current-buffer (marker-buffer marker)
+          (goto-char marker)
+          (org-format-outline-path (org-get-outline-path)))
+        :payload marker
         :due (when due
                (corefighter-encode-time
                 (float-time (org-timestamp-to-time due)))))))

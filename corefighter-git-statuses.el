@@ -4,7 +4,7 @@
 
 ;; Author: Akira Komamura <akira.komamura@gmail.com>
 ;; Version: 1.0-pre
-;; Package-Requires: ((emacs "25.1") (corefighter "1.0") (repom "1.0") (dash "2.10"))
+;; Package-Requires: ((emacs "25.1") (corefighter "0.2") (repom "1.0") (dash "2.10"))
 ;; URL: https://github.com/akirak/corefighter-extras
 
 ;; This file is not part of GNU Emacs.
@@ -45,25 +45,28 @@
 (defclass corefighter-git-statuses (corefighter-module)
   ;; TODO: Allow restricting target repositories
   ((title :initform "Dirty Git repositories")
+   (navigate-action
+    :initform (corefighter-make-action
+               (lambda (repo)
+                 (let ((magit-display-buffer-function
+                        #'magit-display-buffer-same-window-except-diff-v1))
+                   (magit-status repo)))))
    (fields :initarg :fields
            :initform '(dirty untracked)))
   "Core Fighter module to check dirty states of local Git
 repositories.  See `repom-git-statuses` for definitions of the
 options.")
 
-(cl-defmethod corefighter-module-items ((_obj corefighter-git-statuses)
+(cl-defmethod corefighter-module-items ((obj corefighter-git-statuses)
                                         &optional _refresh)
-  (cl-loop for (repo . sums) in (repom-git-statuses (oref _obj fields))
+  (cl-loop for (repo . sums) in (repom-git-statuses (oref obj fields))
            collect (make-corefighter-item
                     :title (abbreviate-file-name repo)
                     :description
                     (mapconcat #'repom-git-status-summary
                                sums
                                "\n")
-                    :action
-                    `(let ((magit-display-buffer-function
-                            #'magit-display-buffer-same-window-except-diff-v1))
-                       (magit-status ,repo)))))
+                    :payload repo)))
 
 (provide 'corefighter-git-statuses)
 ;;; corefighter-git-statuses.el ends here
