@@ -44,7 +44,7 @@
 
 (defclass corefighter-git-statuses (corefighter-module)
   ;; TODO: Allow restricting target repositories
-  ((title :initform "Dirty Git repositories")
+  ((title :initform "Git status")
    (navigate-action
     :initform (corefighter-make-action
                (lambda (repo)
@@ -56,6 +56,10 @@
   "Core Fighter module to check dirty states of local Git
 repositories.  See `repom-git-statuses` for definitions of the
 options.")
+
+(cl-defmethod corefighter-module-title ((obj corefighter-git-statuses))
+  (format "Git repositories %s"
+          (prin1-to-string (oref obj fields))))
 
 (cl-defmethod corefighter-module-items ((obj corefighter-git-statuses)
                                         &optional _refresh)
